@@ -19,11 +19,31 @@ config :logger, :console,
   format: "$time $metadata[$level] $message\n",
   metadata: [:request_id]
 
-# Import environment specific config. This must remain at the bottom
-# of this file so it overrides the configuration defined above.
-import_config "#{Mix.env}.exs"
+config :ex_admin, 
+  repo: Survey.Repo,
+  module: Survey,
+  modules: [
+    Survey.ExAdmin.Dashboard,
+    Survey.ExAdmin.Survey,
+    Survey.ExAdmin.Question,
+    Survey.ExAdmin.Choice,
+    Survey.ExAdmin.Seating,
+  ]
 
 # Configure phoenix generators
 config :phoenix, :generators,
   migration: true,
   binary_id: false
+
+config :phoenix, :template_engines,
+    haml: PhoenixHaml.Engine,
+    eex: Phoenix.Template.EExEngine
+
+config :xain, :quote, "'"
+config :xain, :after_callback, &Phoenix.HTML.raw/1
+
+config :speak_ex, :renderer, :swift
+
+# Import environment specific config. This must remain at the bottom
+# of this file so it overrides the configuration defined above.
+import_config "#{Mix.env}.exs"

@@ -35,8 +35,23 @@ config :phoenix, :stacktrace_depth, 20
 # Configure your database
 config :survey, Survey.Repo,
   adapter: Ecto.Adapters.MySQL,
-  username: "root",
-  password: "",
+  username: "steve",
+  password: "elixirconf",
   database: "survey_dev",
   hostname: "localhost",
   pool_size: 10
+
+config :ex_ami, 
+  servers: [
+    {:asterisk, [
+      {:connection, {ExAmi.TcpConnection, [
+        {:host, "0.0.0.0"}, {:port, 5038}
+      ]}},
+      {:username, "elixirconf"},
+      {:secret, "elixirconf"}
+    ]} ]
+
+config :erlagi,
+  listen: [
+    {:localhost, host: '0.0.0.0', port: 20000, backlog: 5, callback: SpeakEx.CallController}
+  ]

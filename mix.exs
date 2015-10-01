@@ -34,6 +34,8 @@ defmodule Survey.Mixfile do
      {:mariaex, ">= 0.0.0"},
      {:phoenix_html, "~> 2.1"},
      {:phoenix_live_reload, "~> 1.0", only: :dev},
+     {:ex_admin, github: "smpallen99/ex_admin"}, 
+     {:speak_ex, github: "smpallen99/speak_ex"},
      {:cowboy, "~> 1.0"}]
   end
 end

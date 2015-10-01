@@ -1,5 +1,6 @@
 defmodule Survey.Router do
   use Survey.Web, :router
+  use ExAdmin.Router
 
   pipeline :browser do
     plug :accepts, ["html"]
@@ -12,6 +13,9 @@ defmodule Survey.Router do
   pipeline :api do
     plug :accepts, ["json"]
   end
+
+  # setup the ExAdmin routes
+  admin_routes :admin
 
   scope "/", Survey do
     pipe_through :browser # Use the default browser stack
