@@ -174,8 +174,8 @@ mix do deps.get, compile
 
 install ex_admin
 ```
-mix admin.install --renderer swift
-```
+mix admin.install
+``
 
 Add the admin routes
 
@@ -233,6 +233,15 @@ Add the admin resources to the config file
 
 config/config.ex
 ```elixir
+config :ex_admin, 
+  ...
+  modules: [
+    Survey.ExAdmin.Dashboard,
+    Survey.ExAdmin.Survey,
+    Survey.ExAdmin.Question,
+    Survey.ExAdmin.Choice,
+    Survey.ExAdmin.Seating,
+  ]
 ```
 
 Customize the Survey Resource
@@ -294,7 +303,6 @@ Customize the Seating Resource
 
 We would like to:
 
-* List the answers 
 * Disable the new button
 
 web/admin/seating.ex
@@ -306,23 +314,6 @@ defmodule Survey.ExAdmin.Seating do
 
     actions :all, except: [:new]
 
-    show seating do
-      attributes_table
-      panel "Answers" do
-        table_for(seating.answers) do
-          column "Question", fn(answer) -> 
-            "#{answer.question.name}"
-          end
-          column "Answer", fn(answer) -> 
-            "#{answer.choice.name}"
-          end
-        end
-      end
-    end
-    
-    query do
-      %{all: [preload: [:survey, {:answers, [:choice, :question]}]]}
-    end
   end
 end
 ```
@@ -378,6 +369,14 @@ config :erlagi,
   listen: [
     {:localhost, host: '10.1.2.209', port: 20000, backlog: 5, callback: SpeakEx.CallController}
   ]
+```
+
+add the swift renderer 
+
+config/config.exs
+```elixir
+...
+config :speak_ex, :renderer, :swift_app
 ```
 
 Add the voice applications to the application list
@@ -535,6 +534,43 @@ Time to add a survey, some questions and choices to the database
 Test the survey
 
 ## Some Bells and Whistles <a id="chapter-4"></a>
+
+#### Add answers to the seating resource
+
+We would like to:
+
+* List the answers 
+* Disable the new button
+
+web/admin/seating.ex
+```elixir
+defmodule Survey.ExAdmin.Seating do
+  use ExAdmin.Register
+
+  register_resource Survey.Seating do
+
+    actions :all, except: [:new]
+
+    show seating do
+      attributes_table
+      panel "Answers" do
+        table_for(seating.answers) do
+          column "Question", fn(answer) -> 
+            "#{answer.question.name}"
+          end
+          column "Answer", fn(answer) -> 
+            "#{answer.choice.name}"
+          end
+        end
+      end
+    end
+    
+    query do
+      %{all: [preload: [:survey, {:answers, [:choice, :question]}]]}
+    end
+  end
+end
+```
 
 #### Add reporting to the survey page
 
