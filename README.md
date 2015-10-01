@@ -1,6 +1,17 @@
-# Elixir Voice Survey Tutorial
+# Elixir Voice Survey Tutorial <a id="top"></a>
+
 
 A tutorial on using ExAdmin and SpeakEx to create a voice based survey application.
+
+## Table of Contents
+  * [The Elixir Side](#chapter-2)
+    * [Web Application](#chapter-2.1)
+      * [Create the Models](#chapter-2.1.3)
+  * [Auto Administration](#chapter-2.2)
+  * [Voice with Asterisk and SpeakEx](#chapter-3)
+  * [Some Bells and Whistles](#chapter-4)
+  * [License](#license)
+
 
 ## Getting Started
 
@@ -10,13 +21,15 @@ A tutorial on using ExAdmin and SpeakEx to create a voice based survey applicati
 * Install swift_app on asterisk
 * Setup Cepstral Text-to-speech on Asterisk
 
-## The Elixir Side
+## The Elixir Side <a id="chapter-2"></a>
 
-#### Create a new project
+### Web Application with PhoenixFramework <a id="chapter-2.1"></a>
+
+#### Create a new project <a id="chapter-2.1.1"></a>
 
 - `mix phoenix.new elixir_survey_tutorial --database mysql --module Survey --app survey`
 
-#### Setup the database
+#### Setup the database <a id="chapter-2.1.2"></a>
 
 * Edit `config/dev.conf` and set the `username` and `password`
 
@@ -32,32 +45,47 @@ config :survey, Survey.Repo,
     `mix ecto.create`
 
 
-#### Create the models
+#### Create the models <a id="chapter-2.1.3"></a>
 
 We will use 5 models for this application.
 
 * `Survey` to represent different surveys that will be configured
   - `name` to identify the survey (will be read to the caller)
   - `called_number` matches the dialed number to the appropriate survey
-  - `mix phoenix.gen.model Survey surveys name:string called_number:string`
+
+  `mix phoenix.gen.model Survey surveys name:string called_number:string`
 
 * `Question` to represent a question in the survey
   - `name` the spoken question
   - `survey_id` the reference to its survey
-  - `mix phoenix.gen.model Question questions name:string survey_id:references:surveys`
 
+  `mix phoenix.gen.model Question questions name:string survey_id:references:surveys`
 
-```
-mix phoenix.gen.model Seating seatings caller:string survey_id:references:surveys
-mix phoenix.gen.model Choice choices key:integer name:string question_id:references:questions
-mix phoenix.gen.model Answer answers seating_id:references:seatings question_id:references:questions choice_id:references:choices
-```
-* Run the migrations
-```
-mix ecto.migrate
-```
+* `Seating` to represent the results of someone taking the survey
+  - `caller` the phone number of the caller
+  - `survey_id` the reference to its survey
 
-Setup the database associations
+  `mix phoenix.gen.model Seating seatings caller:string survey_id:references:surveys`
+
+* `Choice` to represent a choice for a question
+  - `key` the digit pressed to select this choice
+  - `name` the spoken text for this choice
+  - `question_id` the reference to it's question
+
+  `mix phoenix.gen.model Choice choices key:integer name:string question_id:references:questions`
+
+* `Answer` to represent the choice selected during a survey
+  - `seating_id` the reference to the seating
+  - `question_id` the reference to the question
+  - `choice_id` the reference to the choice
+
+  `mix phoenix.gen.model Answer answers seating_id:references:seatings question_id:references:questions choice_id:references:choices`
+
+Run the migrations with `mix ecto.migrate`
+
+#### Setup the database associations <a id="chapter-2.1.4"></a>
+
+A few more steps are needed to setup the has_many associations in the models 
 
 web/models/survey.ex
 ```elixir
@@ -126,17 +154,20 @@ web/models/answer.ex
   @required_fields ~w(seating_id question_id choice_id)
 ```
 
-add ex_admin dependency
+### Auto Administration with ExAdmin <a id="chapter-2.2"></a>
+
+#### Add the ExAdmin dependency <a id="chapter-2.2.1"></a>
+
 mix.exs
 ```elixir
   defp deps do
      ...
-     {:ex_admin, path: "../../ex_admin"}, 
+     {:ex_admin, github: "smpallen99/ex_admin"}, 
      ...
   end
 ```
 
-get the dependency
+* Get the dependency
 ```
 mix do deps.get, compile
 ```
@@ -199,6 +230,7 @@ mix admin.gen.resource Seating
 ```
 
 Add the admin resources to the config file
+
 config/config.ex
 ```elixir
 ```
@@ -295,14 +327,13 @@ defmodule Survey.ExAdmin.Seating do
 end
 ```
 
-Part 2
-======
+## The Voice Side with Asterisk and SpeakEx <a id="chapter-3"></a>
+
+#### Asterisk Configuration
 
 We will now setup the voice communications with Asterisk
 
-Setup Asterisk
-
-Add the AGI call to the extensions
+##### Add the AGI call to the extensions
 
 /etc/asterisk/extensions_custom.conf
 ```
@@ -325,9 +356,7 @@ Add the dependencies
 mix.exs
 ```elixir
       ...
-      {:speak_ex, path: "../speak_ex"},
-      {:erlagi, github: "smpallen99/erlagi", branch: "feature/rebar3"},
-      {:ex_ami, github: "smpallen99/ex_ami"}, 
+      {:speak_ex, github: "smpallen99/speak_ex"},
       ...
 ```
 
@@ -505,7 +534,9 @@ Time to add a survey, some questions and choices to the database
 
 Test the survey
 
-Add reporting to the survey page
+## Some Bells and Whistles <a id="chapter-4"></a>
+
+#### Add reporting to the survey page
 
 web/admin/survey.ex
 ```elixir
@@ -575,3 +606,10 @@ defmodule Survey.ExAdmin.Survey do
 end
 ```
 
+## License <a id="license"></a>
+
+This tutorial is Copyright (c) 2015 E-MetroTel
+
+The source code is released under the MIT License.
+
+Check [LICENSE](LICENSE) for more information.
