@@ -168,16 +168,20 @@ mix.exs
 ```
 
 * Get the dependency
+
 ```
 mix do deps.get, compile
 ```
 
-install ex_admin
+#### Configure ex_admin <a id="chapter-2.2.2"></a>
+
+* install ex_admin
+
 ```
 mix admin.install
 ``
 
-Add the admin routes
+* Add the admin routes
 
 web/router.ex
 ```elixir
@@ -192,7 +196,8 @@ defmodule Survey.Router do
   ...
 ```
 
-add the paging configuration
+* Add the paging configuration
+
 lib/survey/repo.ex
 ```elixir
   defmodule Survey.Repo do
@@ -202,7 +207,7 @@ lib/survey/repo.ex
 
 ```
 
-Add some admin configuration and the admin modules to the config file
+* Add some admin configuration and the admin modules to the config file
 
 config/config.exs
 ```elixir
@@ -214,13 +219,15 @@ config :ex_admin,
   ]
   ```
 
+#### Give it a try
+
 We now do a quick test to see the admin dashboard
 
 ```
 iex -S mix phoenix.server
 ```
 
-create the admin modules
+* Create the admin modules
 
 ```
 mix admin.gen.resource Survey
@@ -229,7 +236,7 @@ mix admin.gen.resource Choice
 mix admin.gen.resource Seating
 ```
 
-Add the admin resources to the config file
+* Add the admin resources to the config file
 
 config/config.ex
 ```elixir
@@ -244,7 +251,8 @@ config :ex_admin,
   ]
 ```
 
-Customize the Survey Resource
+
+#### Customize the Survey Resource
  
 We would like to:
 
@@ -273,7 +281,7 @@ defmodule Survey.ExAdmin.Survey do
 end
 ```
 
-Customize the Question Resource
+#### Customize the Question Resource
 
 We would like to:
 
@@ -299,7 +307,7 @@ defmodule Survey.ExAdmin.Question do
 end
 ```
 
-Customize the Seating Resource
+#### Customize the Seating Resource
 
 We would like to:
 
@@ -340,9 +348,11 @@ Ensure there is a AMI account in `/etc/asterisk/manager.conf`
 
 Reload asterisk with `asterisk -rx reload`
 
-Back to the project
+## Complete the Application
 
-Add the dependencies
+#### Back to the project
+
+* Add the dependencies
 
 mix.exs
 ```elixir
@@ -351,7 +361,7 @@ mix.exs
       ...
 ```
 
-add the configuration for :ex_ami, :speak_ex, :erlagi
+* Add the configuration for :ex_ami, :speak_ex, :erlagi
 
 config/dev.exs
 ```elixir
@@ -371,7 +381,7 @@ config :erlagi,
   ]
 ```
 
-add the swift renderer 
+* Add the swift renderer 
 
 config/config.exs
 ```elixir
@@ -379,7 +389,7 @@ config/config.exs
 config :speak_ex, :renderer, :swift_app
 ```
 
-Add the voice applications to the application list
+* Add the voice applications to the application list
 
 mix.exs
 ```elixir
@@ -391,13 +401,13 @@ mix.exs
   end
 ```
 
-Get the new dependencies
+* Get the new dependencies
 
 ```
 mix do deps.get, compile
 ```
 
-Create the call router
+#### Create the call router
 
 lib/survey/call_router.ex
 ```elixir
@@ -410,7 +420,7 @@ defmodule Survey.CallRouter do
 end
 ```
 
-Create a call controller
+#### Create a call controller
 
 lib/survey/survey_controller.ex
 ```elixir
@@ -529,9 +539,13 @@ defmodule Survey.SurveyController do
 end
 ```
 
-Time to add a survey, some questions and choices to the database
+### Time to add a survey, some questions and choices to the database
 
-Test the survey
+* Create a Survey
+* Create a couple Questions
+* Create a few Options 
+
+* Test the survey
 
 ## Some Bells and Whistles <a id="chapter-4"></a>
 
