@@ -369,7 +369,7 @@ config :ex_ami,
   servers: [
     {:asterisk, [
       {:connection, {ExAmi.TcpConnection, [
-        {:host, "10.1.3.37"}, {:port, 5038}
+        {:host, "0.0.0.0"}, {:port, 5038}
       ]}},
       {:username, "elixirconf"},
       {:secret, "elixirconf"}
@@ -377,7 +377,7 @@ config :ex_ami,
 
 config :erlagi,
   listen: [
-    {:localhost, host: '10.1.2.209', port: 20000, backlog: 5, callback: SpeakEx.CallController}
+    {:localhost, host: '0.0.0.0', port: 20000, backlog: 5, callback: SpeakEx.CallController}
   ]
 ```
 

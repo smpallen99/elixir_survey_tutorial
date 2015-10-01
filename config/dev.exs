@@ -35,8 +35,8 @@ config :phoenix, :stacktrace_depth, 20
 # Configure your database
 config :survey, Survey.Repo,
   adapter: Ecto.Adapters.MySQL,
-  username: "steve",
-  password: "elixirconf",
+  username: "username",
+  password: "password",
   database: "survey_dev",
   hostname: "localhost",
   pool_size: 10
