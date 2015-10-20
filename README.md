@@ -170,7 +170,7 @@ mix.exs
 * Get the dependency
 
 ```
-mix do deps.get, compile
+mix do deps.get, deps.compile
 ```
 
 #### Configure ex_admin <a id="chapter-2.2.2"></a>
@@ -404,7 +404,7 @@ mix.exs
 * Get the new dependencies
 
 ```
-mix do deps.get, compile
+mix do deps.get, deps.compile
 ```
 
 #### Create the call router
