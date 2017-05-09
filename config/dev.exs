@@ -35,8 +35,8 @@ config :phoenix, :stacktrace_depth, 20
 # Configure your database
 config :survey, Survey.Repo,
   adapter: Ecto.Adapters.MySQL,
-  username: "username",
-  password: "password",
+  username: System.get_env("DB_USERNAME"),
+  password: System.get_env("DB_PASSWORD"),
   database: "survey_dev",
   hostname: "localhost",
   pool_size: 10

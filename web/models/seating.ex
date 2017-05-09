@@ -6,11 +6,10 @@ defmodule Survey.Seating do
     belongs_to :survey, Survey.Survey
     has_many :answers, Survey.Answer
 
-    timestamps
+    timestamps()
   end
 
-  @required_fields ~w(caller survey_id)
-  @optional_fields ~w()
+  @fields ~w(caller survey_id)
 
   @doc """
   Creates a changeset based on the `model` and `params`.
@@ -18,8 +17,8 @@ defmodule Survey.Seating do
   If no params are provided, an invalid changeset is returned
   with no validation performed.
   """
-  def changeset(model, params \\ :empty) do
+  def changeset(model, params \\ %{}) do
     model
-    |> cast(params, @required_fields, @optional_fields)
+    |> cast(params, @fields)
   end
 end

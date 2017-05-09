@@ -7,11 +7,10 @@ defmodule Survey.Survey do
     has_many :questions, Survey.Question
     has_many :seatings, Survey.Seating
 
-    timestamps
+    timestamps()
   end
 
-  @required_fields ~w(name called_number)
-  @optional_fields ~w()
+  @fields ~w(name called_number)
 
   @doc """
   Creates a changeset based on the `model` and `params`.
@@ -19,8 +18,8 @@ defmodule Survey.Survey do
   If no params are provided, an invalid changeset is returned
   with no validation performed.
   """
-  def changeset(model, params \\ :empty) do
+  def changeset(model, params \\ %{}) do
     model
-    |> cast(params, @required_fields, @optional_fields)
+    |> cast(params, @fields)
   end
 end

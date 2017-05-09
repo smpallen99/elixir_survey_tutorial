@@ -18,7 +18,8 @@ defmodule Survey.Web do
 
   def model do
     quote do
-      use Ecto.Model
+      use Ecto.Schema
+      import Ecto.Changeset
       
     end
   end
@@ -28,7 +29,7 @@ defmodule Survey.Web do
       use Phoenix.Controller
 
       alias Survey.Repo
-      import Ecto.Model
+      import Ecto.Schema
       import Ecto.Query, only: [from: 1, from: 2]
 
       import Survey.Router.Helpers
@@ -60,7 +61,7 @@ defmodule Survey.Web do
       use Phoenix.Channel
 
       alias Survey.Repo
-      import Ecto.Model
+      import Ecto.Schema
       import Ecto.Query, only: [from: 1, from: 2]
 
     end

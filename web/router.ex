@@ -15,7 +15,10 @@ defmodule Survey.Router do
   end
 
   # setup the ExAdmin routes
-  admin_routes :admin
+  scope "/admin", ExAdmin do
+    pipe_through :browser
+    admin_routes()
+  end
 
   scope "/", Survey do
     pipe_through :browser # Use the default browser stack

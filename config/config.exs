@@ -14,6 +14,9 @@ config :survey, Survey.Endpoint,
   pubsub: [name: Survey.PubSub,
            adapter: Phoenix.PubSub.PG2]
 
+config :survey, 
+  ecto_repos: [Survey.Repo]
+
 # Configures Elixir's Logger
 config :logger, :console,
   format: "$time $metadata[$level] $message\n",
@@ -39,8 +42,7 @@ config :phoenix, :template_engines,
     haml: PhoenixHaml.Engine,
     eex: Phoenix.Template.EExEngine
 
-config :xain, :quote, "'"
-config :xain, :after_callback, &Phoenix.HTML.raw/1
+config :xain, :after_callback, {Phoenix.HTML, :raw}
 
 config :speak_ex, :renderer, :swift
 

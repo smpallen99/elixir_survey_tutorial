@@ -112,7 +112,7 @@ web/models/question.ex
     timestamps
   end
 
-  @required_fields ~w(name survey_id)
+  @fields ~w(name survey_id)
 ```
 
 web/models/choice.ex
@@ -126,7 +126,7 @@ web/models/choice.ex
     timestamps
   end
 
-  @required_fields ~w(key name question_id)
+  @fields ~w(key name question_id)
 ```
 web/models/seating.ex
 ```elixir
@@ -138,7 +138,7 @@ web/models/seating.ex
     timestamps
   end
 
-  @required_fields ~w(caller survey_id)
+  @fields ~w(caller survey_id)
 ```
 
 web/models/answer.ex
@@ -151,7 +151,7 @@ web/models/answer.ex
     timestamps
   end
 
-  @required_fields ~w(seating_id question_id choice_id)
+  @fields ~w(seating_id question_id choice_id)
 ```
 
 ### Auto Administration with ExAdmin <a id="chapter-2.2"></a>
@@ -190,7 +190,10 @@ defmodule Survey.Router do
   use ExAdmin.Router
   ...
   # setup the ExAdmin routes
-  admin_routes :admin
+  scope "/admin", ExAdmin do
+    pipe_through :browser
+    admin_routes()
+  end
 
   scope "/", Survey do
   ...
@@ -566,7 +569,7 @@ defmodule Survey.ExAdmin.Seating do
     actions :all, except: [:new]
 
     show seating do
-      attributes_table
+      attributes_table()
       panel "Answers" do
         table_for(seating.answers) do
           column "Question", fn(answer) -> 
@@ -598,7 +601,7 @@ defmodule Survey.ExAdmin.Survey do
     menu priority: 2
 
     show survey do
-      attributes_table
+      attributes_table()
 
       panel "Questions" do
         table_for(survey.questions) do
@@ -658,7 +661,7 @@ end
 
 ## License <a id="license"></a>
 
-This tutorial is Copyright (c) 2015 E-MetroTel
+This tutorial is Copyright (c) 2015-2017 E-MetroTel
 
 The source code is released under the MIT License.
 
